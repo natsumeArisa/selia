@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖萌莉阁—一个快捷的资源小站🌹</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/selia/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffcce0, #d1e3ff);
+            color: #333;
+            min-height: 100vh;
+            padding-top: 70px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/selia/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="%23ff7eb9" opacity="0.1"/><circle cx="50" cy="50" r="2" fill="%237afcff" opacity="0.1"/><circle cx="80" cy="30" r="4" fill="%23ff65a3" opacity="0.1"/></svg>');
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #ff6b9d;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 5px 15px;
+            width: 60%;
+            max-width: 600px;
+            border: 2px solid #ffcce0;
+        }
+        
+        .search-container input {
+            border: none;
+            outline: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.1rem;
+            background: transparent;
+        }
+        
+        .search-container button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #ff6b9d;
+            font-size: 1.2rem;
+        }
+        
+        /* 主要内容区域 */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title h1 {
+            color: #ff6b9d;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .game-image {
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .game-card:hover .game-image img {
+            transform: scale(1.05);
+        }
+          .game-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .game-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #ff6b9d, #ff8e6e);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #ff5a8c, #ff7d5e);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+        
+        .download-btn i {
+            margin-right: 8px;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .search-container {
+                width: 70%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="icon"href="/selia/TUBIAOO.JPG"/>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-gamepad"></i>
+            💖萌莉阁🍞
+        </a>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索游戏名称、描述...Enter">
+            <button id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <div class="section-title">
+            <h1>🚩主页</h1>
+            <p>热门游戏资源——你想要的都在这里！😁</p>
+        </div>
+        
+        <div class="games-grid" id="gamesGrid">
+            <!-- 游戏卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="copyright">
+            &copy; 联系我们NatsumeRinko@Outlook.com | 仅供学习交流使用所有资源均来自互联网
+        </div>
+    </footer>
+
+    <script>
+        // 游戏数据
+        const games = [
+            {
+                id: 1,
+                title: "常轨脱离Creative",
+                description: "当季节的脚步踏进了6月底……千玉学园的大家公认的隐士和泉（いずみ）智宏（ともひろ），今天也本该在教室偏安一隅，度过平静的一天，然后……“恭喜当选！本届学生会会长和泉君！",
+                downloads: "Ty版",
+                tags: ["角色扮演", "开放世界"],
+                imageUrl: "/selia/kkl.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/D6jGtJ"
+            },
+            {
+                id: 2,
+                title: "千之刃涛,桃花染之皇姬",
+                description: "动乱的岁月过去之后的春天，有着两千年历史的天京桃花再次盛开。仅存的唯一帝位继承者宫国朱璃，为了义兄而登上皇帝宝座的鸨田奏海，深爱着人们，不断向大御神祈祷的巫...",
+                downloads: "PC版",
+                tags: ["角色扮演", "策略"],
+                imageUrl: "/selia/kkll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/LOQAug"
+            },
+            {
+                id: 3,
+                title: "幸运草的约定",
+                description: "这，是深藏不露的心意；这，是永恒不变的誓言；这，是发自内心的祈愿；这，是萦绕心头的后悔；同时，也是幼时的约定……被父母抛弃，在英国的福利设施中长大的“优人”被从事贸..",
+                downloads: "Kr版",
+                tags: ["策略", "收集"],
+                imageUrl: "/selia/kklll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/pZDwuw"
+            },
+            {
+            id: 4,
+                title: "宝石少女 1ST",
+                description: "――我不是人类。别人都将我称作恶魔”由恶魔抚养的宝石技师少年雷米，与记忆缺失的少女拉兹瑞尔的故事从这句令人震惊的自白揭开了帷幕。",
+                downloads: "PC版",
+                tags: ["策略", "塔防"],
+                imageUrl: "/selia/kkllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/oAjNTR"
+            },
+            {
+                id: 5,
+                title: "天选庶民的真命之选",
+                description: "光与暗、发展与衰退、荣耀与没落——资本主义为这个国家带来了扭曲的秩序与和平。在这片特别区域里，极少数的精英阶级独占了财富、教育以及安全..",
+                downloads: "Ty版",
+                tags: ["模拟", "养成"],
+                imageUrl: "/selia/kklllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/JGPYsl"
+            },
+            {
+                id: 6,
+                title: "FLIP＊FLOP ～RAMBLING OVERRUN",
+                description: "从乡下搬到大城市的六乡志伸，有一部祖父留下的「过时旧手机」，却从中召唤出了一个完全真人大小，就算是在这个时代也难以想象的「AI助理」之女王。身为学生亦是..",
+                downloads: "Ty版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/kkllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/11oliQ"
+            },
+               {
+                id: 7,
+                title: "天使☆嚣嚣RE-BOOT!",
+                description: "该起床起床，该上学上学，该上课上课—事事一如既往，本以为又是平淡无奇的一天。……结果它不是。突然有个女孩儿，白翼如雪，仙姿玉貌，毫无征兆地降临在我眼前。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/kklllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/NL65f1"
+             },
+               
+               {
+                id: 8,
+                title: "魔女的夜宴",
+                description: "保科柊史拥有着这样一个秘密。那就是拥有着“能够感受到他人的感觉、感受和心情”的不可思议的力量。他的同班同学，绫地宁宁她也拥有着一个不能对任何人诉说的秘密。",
+                downloads: "APK",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/kkllllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/MW9aC5"
+             },
+
+               
+               {
+                id: 9,
+                title: "五色浮影绽放于花之海洋",
+                description: "定居在樱花庄、自称“幽灵”的少女。聪慧漂亮，是个现实主义者。不特别重视自己的存在，也不明白自己是为何诞生的，很感激愿意帮忙解开这些谜团的道隆。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/kkllllllllk.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/KXVPuV"
+             },
+               
+
+               
+               {
+                id: 10,
+                title: "创作少女的恋爱公式",
+                description: "从今年开始搬到表妹家寄宿的主人公·镜寿季（かがみとしき）寿季前往东京，其实心里还有一个秘密。那就是，找回失去的作为创作者的力量——曾经，寿季有一位青梅竹马少女。她的名字，是彩濑逢樱..",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/KKLLLLLKK.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/3Q25I0"
+             },
+               
+               
+
+               
+               {
+                id: 11,
+                title: "樱之诗",
+                description: "想要传达的，仅仅只有一件将瞬间保存下来的永远。—『幸福前方的物语』『如果那是虚无的话那虚无这种东西就是如此，某种程度上一切都是共通着的』（世界只是我眼里的世界，在每个人眼里也有不同的世界....",
+                downloads: "APK",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/lplp.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/PdRauV"
+            },
+            
+               
+               
+
+               
+               {
+                id: 12,
+                title: "千恋万花",
+                description: "在一座连公交都不通的深山里，有个叫做“穗织”的小镇。小镇地处偏僻，与周边来往甚少，甚至连城镇的现代化都慢了半拍。也正因如此，穗织镇渐渐发展出了独具特色的地方文化，现如今已成了别....",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/ioioioi.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/ERD6Ca"
+            },
+              
+            
+               
+               
+
+               
+               {
+                id: 13,
+                title: "近月少女的礼仪",
+                description: "主人公大蔵遊星，作为代表了日本财界的“华丽一族”的大蔵家的末端，其出生不被期待。在优秀的亲人与家庭教师身边被严格培育的遊星，虽然成了一个多才多艺的万能人，但换句话说也不过...",
+                downloads: "ONS版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/uiui.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/V3GqhN"
+            },
+              
+              
+            
+               
+               
+
+               
+               {
+                id: 14,
+                title: "星光咖啡馆与死神之蝶",
+                description: "主人公高嶺昂晴过着风平浪静的学生生活。然而某天，因意外事故丧生。这时发生了始料未及的事情。本该死去的高嶺昂晴，却苏醒了过来。并且还在——死亡当天早上。大惑不解之下，再次开始了同一天的生活.",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/popo.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/xXMkcq"
+            },
+             
+              
+              
+            
+               
+               
+
+               
+               {
+                id: 15,
+                title: "痴情哥哥与病弱妹妹的乡间生活",
+                description: "与你病弱的姐姐在偏远乡村家中的生活。由于疾病，两个兄妹搬到了空气更加清新的乡村住所。帮助这对兄妹在维持姐姐健康的同时，充分享受他们的乡村生活。",
+                downloads: "PC版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/hjhjhj.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/QJzVtv"
+            },
+             
+             
+              
+              
+            
+               
+               
+
+               
+               {
+                id: 16,
+                title: "若能与你再次相见",
+                description: "想从那个时候开始再试一次……”你没有这样想过吗？对于过去的失败与后悔，眼前发生的事态，如果能回到过去重新开始的话……谁都会这样想过吧。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/qwqw.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/Z350I0"
+            },
+             
+               
+               {
+                id: 17,
+                title: "春音Alice＊Gram",
+                description: "隆冬已过，初春仍远的第三学期—位于临海城市·凑十区的成棱学园，拥有最先进的设备和重视自主性的校风，偏差值很高、男女比例4：6的高人气学校。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/iuuiuiuiu.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/MvMat5"
+            },
+            
+               {
+                id: 18,
+                title: "白恋SAKURA＊GRAM",
+                description: "这是一个拥有超能力的世界，位于临海城市・凑十区的成凌学园主人公・空条枫太郎是这里的高二学生学园有两个管理组织，学生会”和“新生会主人公，空条飒太郎所属的是....",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/fff.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/krA0Sd"
+            },
+             
+            
+               {
+                id: 19,
+                title: "樱花，萌放",
+                description: "没人任何人知道，世界曾被“魔法少女”们在暗中拯救过，战争结束的十几年之后在樱花飞舞的古都“参禅町”生活着的主人公——奏大雅一边往在樱丘学园上学，一边与猫娘小黑和后辈千和们",
+                downloads: "PC版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/bnbnb.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/6gx5Hz"
+           },
+           
+               
+               {
+                id: 20,
+                title: "魔女的夜宴",
+                description: "保科柊史拥有着这样一个秘密。那就是拥有着“能够感受到他人的感觉、感受和心情”的不可思议的力量。他的同班同学，绫地宁宁她也拥有着一个不能对任何人诉说的秘密。",
+                downloads: "PC版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/kkllllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/aNxRhV"
+             },
+              
+           
+               
+               {
+                id: 21,
+                title: "流星-a Wish Star-",
+                description: "我来到这是为了成为你的女朋友”一位银发的少女突然出现在暑假前某个潮湿闷热的夜晚。主人公——见星彼方，与性格活泼的姐姐，二人同居的日常生活就此被打破。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/gaga.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/YPdoiy"
+                
+             },
+                
+              
+               
+               {
+                id: 22,
+                title: "玉响，未来",
+                description: "她，在寻找遗失之物。某个弥漫着异乡风情的小镇，深野市——那里曾经是人类与非人生物、与妖异们共同生活的幽玄之地。因此，深野市遍布着奇妙之人的离奇故事。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/zczc.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/l1X2I1"
+                
+             },
+                
+                
+               
+               {
+                id: 23,
+                title: "兽娘育成方案",
+                description: "在乡下生活的学生幸坂修司，某一天在山里捡到了一名长着神秘兽耳和尾巴的奇妙女孩。她应该是10年前遇到“神隐”的那个女孩。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/ddsds.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/R9nbU5"
+                
+             },
+              
+                  
+               
+               {
+                id: 24,
+                title: "5分钟的邂逅时间停止与不可避免的命运",
+                description: "一天早晨，我走在去车站的路上，从背后传来了这样的声音。“叫的人就是你哦，大哥哥”我的面前出现了一个散发着奇特氛围的娇小少女。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                imageUrl: "/selia/asas.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/gO8nt5"
+                
+             },
+             
+        ];
+
+        // 渲染游戏卡片
+        function renderGames(gameList) {
+            const gamesGrid = document.getElementById('gamesGrid');
+            gamesGrid.innerHTML = '';
+            
+            gameList.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                
+                // 创建标签HTML
+                const tagsHTML = game.tags.map(tag => 
+                    `<span class="game-tag">${tag}</span>`
+                ).join('');
+                
+                gameCard.innerHTML = `
+                    <div class="game-image">
+                        <img src="${game.imageUrl}" alt="${game.title}封面">
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">${game.title}</h3>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-meta">
+                            <span><i class="fas fa-download"></i> ${game.downloads}</span>
+                            <span><i class="fas fa-star"></i> ${game.rating}</span>
+                        </div>
+                        <a href="${game.downloadUrl}" class="download-btn" target="_blank">
+                            <i class="fas fa-download"></i> 下载资源
+                        </a>
+                    </div>
+                `;
+         gamesGrid.appendChild(gameCard);
+            });
+        }
+
+        // 搜索功能
+        function searchGames(query) {
+            if (!query) return games;
+            
+            const lowerQuery = query.toLowerCase();
+            return games.filter(game => 
+                game.title.toLowerCase().includes(lowerQuery) ||
+                game.description.toLowerCase().includes(lowerQuery) ||
+                game.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+            );
+        }
+
+        // 页面加载时渲染游戏
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGames(games);
+            
+            // 搜索按钮事件
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value;
+                const results = searchGames(query);
+                renderGames(results);
+            });
+            
+            // 输入框回车事件
+            document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    const query = document.getElementById('searchInput').value;
+                    const results = searchGames(query);
+                    renderGames(results);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
