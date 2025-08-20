@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="💖萌莉阁-发现最新最热的游戏资源">
+    <title>💖萌莉阁—一个快捷的资源小站🌹</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffcce0, #d1e3ff);
+            color: #333;
+            min-height: 100vh;
+            padding-top: 70px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="%23ff7eb9" opacity="0.1"/><circle cx="50" cy="50" r="2" fill="%237afcff" opacity="0.1"/><circle cx="80" cy="30" r="4" fill="%23ff65a3" opacity="0.1"/></svg>');
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #ff6b9d;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 5px 15px;
+            width: 60%;
+            max-width: 600px;
+            border: 2px solid #ffcce0;
+        }
+        
+        .search-container input {
+            border: none;
+            outline: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 1.1rem;
+            background: transparent;
+        }
+        
+        .search-container button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #ff6b9d;
+            font-size: 1.2rem;
+        }
+        
+        /* 抽拉式公告栏 */
+        .announcement-toggle {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff8eb4, #ff6b9d);
+            color: white;
+            padding: 8px 20px;
+            z-index: 998;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .announcement-toggle span {
+            font-weight: 500;
+        }
+        
+        .announcement-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .announcement-content {
+            position: fixed;
+            top: 105px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            z-index: 997;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        .announcement-content.active {
+            display: block;
+        }
+        
+        .announcement-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .announcement-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .announcement-date {
+            color: #ff6b9d;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* 主要内容区域 */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+        
+        /* 左侧标签分类栏 */
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        
+        .tags-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .tags-title {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffcce0;
+        }
+        
+        .tag-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: rgba(255, 204, 224, 0.3);
+            border: none;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .tag-btn:hover {
+            background: rgba(255, 107, 157, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .tag-btn.active {
+            background: linear-gradient(135deg, #ff6b9d, #ff8e6e);
+            color: white;
+            box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3);
+        }
+        
+        .tag-btn i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex-grow: 1;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title h1 {
+            color: #ff6b9d;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        /* 游戏网格 */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .game-image {
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .game-card:hover .game-image img {
+            transform: scale(1.05);
+        }
+        
+        /* 右上角水泡标签 */
+        .bubble-tags {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2;
+        }
+        
+        .bubble-tag {
+            background: rgba(255, 107, 157, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            animation: bubbleFloat 3s ease-in-out infinite;
+        }
+        
+        .bubble-tag:nth-child(2) {
+            animation-delay: 0.5s;
+            background: rgba(106, 27, 154, 0.9);
+        }
+        
+        .bubble-tag:nth-child(3) {
+            animation-delay: 1s;
+            background: rgba(33, 150, 243, 0.9);
+        }
+        
+        @keyframes bubbleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .game-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .game-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+        
+        .rating i {
+            margin-right: 5px;
+            color: #ffb300;
+        }
+        
+        .downloads {
+            display: flex;
+            align-items: center;
+        }
+        
+        .downloads i {
+            margin-right: 5px;
+            color: #ff6b9d;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #ff6b9d, #ff8e6e);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to right, #ff5a8c, #ff7d5e);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+        
+        .download-btn i {
+            margin-right: 8px;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .disclaimer {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .tags-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .tag-btn {
+                width: auto;
+                display: inline-block;
+                margin-bottom: 0;
+            }
+            
+            .tags-title {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                width: 70%;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .announcement-toggle {
+                top: 70px;
+            }
+            
+            .announcement-content {
+                top: 105px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .tags-container {
+                flex-direction: column;
+            }
+            
+            .tag-btn {
+                width: 100%;
+                display: block;
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+     <link rel="icon"href="/selia/TUBIAOO.JPG"/>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-gamepad"></i>
+             💖萌莉阁🍞
+        </a>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索游戏名称、描述或类型...Enter">
+            <button id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+    </header>
+    
+    <!-- 抽拉式公告栏 -->
+    <div class="announcement-toggle" id="announcementToggle">
+        <span><i class="fas fa-bullhorn"></i> 最新公告</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    
+    <div class="announcement-content" id="announcementContent">
+        <div class="announcement-item">
+            <span class="announcement-date">【最新公告】</span>
+            柚子社新作LimeLight Lemonade Jam！将于9月27日发售！！
+        </div>
+        <div class="announcement-item">
+            <span class="announcement-date">【最新公告】</span>
+           本网站不定期将于夜间13点半到14点进行不定期维护在此期间访问此网站可能出现404页面，属于正常现象.
+        </div>
+        <div class="announcement-item">
+            <span class="announcement-date">【最新公告】</span>
+            本小站资源经审查，一切资源游戏正常运行不存在坏盘病毒问题，如有资源问题请邮箱联系我们。
+        </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <!-- 左侧标签分类栏 -->
+        <div class="sidebar">
+            <div class="tags-container">
+                <h3 class="tags-title">资源分类</h3>
+                <button class="tag-btn active" data-tag="全部">
+                    <i class="fas fa-star"></i>全部资源
+                </button>
+                <button class="tag-btn" data-tag="热门">
+                    <i class="fab fa-android"></i>热门游戏
+                </button>
+                <button class="tag-btn" data-tag="安卓">
+                    <i class="fas fa-desktop"></i>安卓资源
+                </button>
+                <button class="tag-btn" data-tag="PC">
+                    <i class="fas fa-gamepad"></i>PC资源
+                </button>
+                <button class="tag-btn" data-tag="Kr/Ty">
+                    <i class="fab fa-apple"></i>Kr/Ty资源
+                </button>
+                <button class="tag-btn" data-tag="ons">
+                    <i class="fas fa-fire"></i>ons资源
+                </button>
+            </div>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="section-title">
+                <h1>🚩主页</h1>
+                <p>热门游戏资源——你想要的都在这里！😁</p>
+            </div>
+            
+            <div class="disclaimer">
+                <p><strong>免责声明：</strong>本网站展示的游戏资源仅供学习交流使用，所有游戏版权归其各自所有者所有。请勿用一切商业盈利行为，支持正版游戏。</p>
+            </div>
+            
+            <div class="games-grid" id="gamesGrid">
+                <!-- 游戏卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="copyright">
+            &copy; 联系我们NatsumeRinko@Outlook.com 补资源/加入我们| 仅供学习交流使用所有资源均来自互联网
+        </div>
+    </footer>
+
+    <script>
+        // 游戏数据
+        const games = [
+              {
+                id: 1,
+                title: "航迹云的彼方",
+                description: "我的名字是美汐瑛莉。 是个成绩、运动能力、身材都超群的完美的美少女。 尽管要说世上大体的事情的话，我是懂的—— ——只是，恋爱我还不懂。而我最近对一个人很感兴趣，他是同班的广崎君。 虽则他是个有幽默细胞的有趣的人，不过在他的身上有个让人怀疑是不是听错了的趣闻——",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["安卓"],
+                imageUrl: "/selia/Hikou.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/qr30ip"
+            },
+          {
+                id: 2,
+                title: "永不枯萎的世界与终结之花",
+                description: "在这样的世界上，我就是这样子一直活下来的。但是我仍然想要活下去。就算这要交换别人的性命」跟春一样仰视着飞散的花瓣，「就算这个世界有怎样强硬的要求。就算有多少人说不能饶恕春也好——」",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["安卓", "热门"],
+                imageUrl: "/selia/zhihua.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/A5JvTa"
+            },
+             {
+                id: 3,
+                title: "金辉恋曲四重奏",
+                description: "私立诺布尔学园——走出这里的学生，都将是未来的绅士淑女。在这所全宿制的学校，他们不仅要学习文化，还要培养优良的素养。因为北欧某小国的王族入学，校内更是弥漫着前所未有的紧张感。",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/mlmlmlml.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/MWp1f5"
+            },
+          {
+                id: 4,
+                title: "红月摇曳的恋之星火",
+                description: "「刃道」——那是204X年的日本最熱門的，以真劍來進行比試的近未來運動競技。而就在今年，有兩位少女入學到了這個以教導刃道為主的學校「叢雲學園」。",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["PC"],
+                imageUrl: "/selia/nmhx.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/ZYGNU0"
+            },
+               {
+                id: 5,
+                title: "Study § Steady 2/见习恋人2",
+                description: "与你相遇——是她最初的“恋爱”见习。相遇，相知，相恋，渐渐展现真实的一面。不经意间，开始用爱称呼唤你——仅仅如此，两人关系急速拉近。夏季青空之下，微波粼粼之际，一起观赏烟火——与她的距离又进了一步。",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["PC"],
+                imageUrl: "/selia/jianxi.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/GxqWSO"
+            },
+             {
+                id: 6,
+                title: "我的眼睛能看光光！不可知的未来与透视的命运",
+                description: "在郊外的森林深处，有一所“魔女之馆”。青梅竹马六人组在他们小的时候成功拜访了那里。大家各自都得到了自己的魔法礼物，并带了回去。、然而——只有那个少年不一样。",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/toushi.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/y2PGfo"
+            },
+              {
+                id: 7,
+                title: "9-nine-九次九日九重色",
+                description: "白巳津川市。唯一的特色恐怕也就只有“学园都市”这点了。打算招揽观光客进行都市复兴，眼下却毫无进展。但是却在意想不到的情况下聚集了所有人的视线.",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/plpl.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/96eVUQ"
+            },
+              {
+                id: 8,
+                title: "金辉恋曲四重奏 -Golden Time-FD",
+                description: "那里是培养未来绅士淑女的地方—私立诺布尔学院培养品学兼优的学生的全寄宿制学校而今年，迎来了从北欧的小国远道而来的王族，校园弥漫着前所未有的紧张感主人...",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/lklkmm.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/vZxXiD"
+            },
+             {
+                id: 9,
+                title: "常轨脱离Creative",
+                description: "当季节的脚步踏进了6月底……千玉学园的大家公认的隐士和泉（いずみ）智宏（ともひろ），今天也本该在教室偏安一隅，度过平静的一天，然后……“恭喜当选！本届学生会会长和泉君！",
+                tags: ["角色扮演", "开放世界"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/kkl.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/D6jGtJ"
+            },
+             {
+                id: 10,
+                title: "千之刃涛,桃花染之皇姬",
+                description: "动乱的岁月过去之后的春天，有着两千年历史的天京桃花再次盛开。仅存的唯一帝位继承者宫国朱璃，为了义兄而登上皇帝宝座的鸨田奏海，深爱着人们，不断向大御神祈祷的巫...",
+                tags: ["角色扮演", "策略"],
+                platforms: ["PC"],
+                imageUrl: "/selia/kkll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/LOQAug"
+            },
+          {
+                id: 11,
+                title: "幸运草的约定",
+                description: "这，是深藏不露的心意；这，是永恒不变的誓言；这，是发自内心的祈愿；这，是萦绕心头的后悔；同时，也是幼时的约定……被父母抛弃，在英国的福利设施中长大的“优人”被从事贸..",
+                tags: ["策略", "收集"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/kklll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/pZDwuw"
+            },
+                {
+            id: 12,
+                title: "宝石少女 1ST",
+                description: "――我不是人类。别人都将我称作恶魔”由恶魔抚养的宝石技师少年雷米，与记忆缺失的少女拉兹瑞尔的故事从这句令人震惊的自白揭开了帷幕。",
+                tags: ["策略", "塔防"],
+                platforms: ["PC"],
+                imageUrl: "/selia/kkllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/oAjNTR"
+            },
+               {
+                id: 13,
+                title: "天选庶民的真命之选",
+                description: "光与暗、发展与衰退、荣耀与没落——资本主义为这个国家带来了扭曲的秩序与和平。在这片特别区域里，极少数的精英阶级独占了财富、教育以及安全..",
+                tags: ["模拟", "养成"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/kklllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/JGPYsl"
+            },
+             {
+                id: 14,
+                title: "FLIP＊FLOP ～RAMBLING OVERRUN",
+                description: "从乡下搬到大城市的六乡志伸，有一部祖父留下的「过时旧手机」，却从中召唤出了一个完全真人大小，就算是在这个时代也难以想象的「AI助理」之女王。身为学生亦是..",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/kkllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/11oliQ"
+            },
+             {
+                id: 15,
+                title: "天使☆嚣嚣RE-BOOT!",
+                description: "该起床起床，该上学上学，该上课上课—事事一如既往，本以为又是平淡无奇的一天。……结果它不是。突然有个女孩儿，白翼如雪，仙姿玉貌，毫无征兆地降临在我眼前。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/kklllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/NL65f1"
+             },
+                {
+                id: 16,
+                title: "魔女的夜宴",
+                description: "保科柊史拥有着这样一个秘密。那就是拥有着“能够感受到他人的感觉、感受和心情”的不可思议的力量。他的同班同学，绫地宁宁她也拥有着一个不能对任何人诉说的秘密。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["安卓", "热门"],
+                imageUrl: "/selia/kkllllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/MW9aC5"
+             },
+                 {
+                id: 17,
+                title: "五色浮影绽放于花之海洋",
+                description: "定居在樱花庄、自称“幽灵”的少女。聪慧漂亮，是个现实主义者。不特别重视自己的存在，也不明白自己是为何诞生的，很感激愿意帮忙解开这些谜团的道隆。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/kkllllllllk.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/KXVPuV"
+             },
+               {
+                id: 18,
+                title: "创作少女的恋爱公式",
+                description: "从今年开始搬到表妹家寄宿的主人公·镜寿季（かがみとしき）寿季前往东京，其实心里还有一个秘密。那就是，找回失去的作为创作者的力量——曾经，寿季有一位青梅竹马少女。她的名字，是彩濑逢樱..",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/KKLLLLLKK.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/3Q25I0"
+             },
+                 {
+                id: 19,
+                title: "樱之诗",
+                description: "想要传达的，仅仅只有一件将瞬间保存下来的永远。—『幸福前方的物语』『如果那是虚无的话那虚无这种东西就是如此，某种程度上一切都是共通着的』（世界只是我眼里的世界，在每个人眼里也有不同的世界....",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["安卓", "热门"],
+                imageUrl: "/selia/lplp.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/PdRauV"
+            },
+              {
+                id: 20,
+                title: "千恋万花",
+                description: "在一座连公交都不通的深山里，有个叫做“穗织”的小镇。小镇地处偏僻，与周边来往甚少，甚至连城镇的现代化都慢了半拍。也正因如此，穗织镇渐渐发展出了独具特色的地方文化，现如今已成了别....",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/ioioioi.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/ERD6Ca"
+            },
+            {
+                id: 21,
+                title: "近月少女的礼仪",
+                description: "主人公大蔵遊星，作为代表了日本财界的“华丽一族”的大蔵家的末端，其出生不被期待。在优秀的亲人与家庭教师身边被严格培育的遊星，虽然成了一个多才多艺的万能人，但换句话说也不过...",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["ons", "热门"],
+                imageUrl: "/selia/uiui.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/V3GqhN"
+            },
+             {
+                id: 22,
+                title: "星光咖啡馆与死神之蝶",
+                description: "主人公高嶺昂晴过着风平浪静的学生生活。然而某天，因意外事故丧生。这时发生了始料未及的事情。本该死去的高嶺昂晴，却苏醒了过来。并且还在——死亡当天早上。大惑不解之下，再次开始了同一天的生活.",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/popo.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/xXMkcq"
+            },
+              {
+                id: 23,
+                title: "痴情哥哥与病弱妹妹的乡间生活",
+                description: "与你病弱的姐姐在偏远乡村家中的生活。由于疾病，两个兄妹搬到了空气更加清新的乡村住所。帮助这对兄妹在维持姐姐健康的同时，充分享受他们的乡村生活。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/hjhjhj.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/QJzVtv"
+            },
+               {
+                id: 24,
+                title: "若能与你再次相见",
+                description: "想从那个时候开始再试一次……”你没有这样想过吗？对于过去的失败与后悔，眼前发生的事态，如果能回到过去重新开始的话……谁都会这样想过吧。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/qwqw.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/Z350I0"
+            },
+             {
+                id: 25,
+                title: "春音Alice＊Gram",
+                description: "隆冬已过，初春仍远的第三学期—位于临海城市·凑十区的成棱学园，拥有最先进的设备和重视自主性的校风，偏差值很高、男女比例4：6的高人气学校。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/iuuiuiuiu.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/MvMat5"
+            },
+              {
+                id: 26,
+                title: "白恋SAKURA＊GRAM",
+                description: "这是一个拥有超能力的世界，位于临海城市・凑十区的成凌学园主人公・空条枫太郎是这里的高二学生学园有两个管理组织，学生会”和“新生会主人公，空条飒太郎所属的是....",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/fff.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/krA0Sd"
+            },
+             {
+                id: 27,
+                title: "樱花，萌放",
+                description: "没人任何人知道，世界曾被“魔法少女”们在暗中拯救过，战争结束的十几年之后在樱花飞舞的古都“参禅町”生活着的主人公——奏大雅一边往在樱丘学园上学，一边与猫娘小黑和后辈千和们..",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC"],
+                imageUrl: "/selia/bnbnb.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/6gx5Hz"
+           },
+            {
+                id: 28,
+                title: "魔女的夜宴",
+                description: "保科柊史拥有着这样一个秘密。那就是拥有着“能够感受到他人的感觉、感受和心情”的不可思议的力量。他的同班同学，绫地宁宁她也拥有着一个不能对任何人诉说的秘密。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/kkllllllll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/aNxRhV"
+             },
+              {
+                id: 29,
+                title: "流星-a Wish Star-",
+                description: "我来到这是为了成为你的女朋友”一位银发的少女突然出现在暑假前某个潮湿闷热的夜晚。主人公——见星彼方，与性格活泼的姐姐，二人同居的日常生活就此被打破。",
+                downloads: "Kr版",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/gaga.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/YPdoiy"
+             },
+              {
+                id: 30,
+                title: "玉响，未来",
+                description: "她，在寻找遗失之物。某个弥漫着异乡风情的小镇，深野市——那里曾经是人类与非人生物、与妖异们共同生活的幽玄之地。因此，深野市遍布着奇妙之人的离奇故事。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/zczc.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/l1X2I1"
+                
+             },
+               {
+                id: 31,
+                title: "兽娘育成方案",
+                description: "在乡下生活的学生幸坂修司，某一天在山里捡到了一名长着神秘兽耳和尾巴的奇妙女孩。她应该是10年前遇到“神隐”的那个女孩。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/ddsds.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/R9nbU5"
+                
+             },
+               {
+                id: 32,
+                title: "5分钟的邂逅时间停止与不可避免的命运",
+                description: "一天早晨，我走在去车站的路上，从背后传来了这样的声音。“叫的人就是你哦，大哥哥”我的面前出现了一个散发着奇特氛围的娇小少女。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/asas.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/gO8nt5"
+                
+             },
+               {
+                id: 33,
+                title: "9-nine-天色天歌天籁音",
+                description: "是“9-nine-”系列的第二作。女主是“新海天”。本系列每个作品可攻略角色只有一人，同样的世界观，同样的舞台，不同的女主角展开的故事。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/opdod.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/WJ9YT2"
+                
+             },
+             {
+                id: 34,
+                title: "9-nine-雪色雪花雪余痕",
+                description: "白巳津川市，是除了学园都市这点之外没什么其他特色的地区。由于大地震，神社中祭祀白蛇九十九的神器破损，来自平行世界能授予持有者特...",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/yiyi.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/wZARfV"
+                
+             },
+             {
+                id: 35,
+                title: "不可视之药与坎坷的命运",
+                description: "主人公·待雪晴季正在看着虚拟网络偶像的视频，然而节目气氛一转，不知怎的就成了面向观众的抽奖活动，而奖品则是—“奖品是能实现一~切愿望的特殊权利哦！",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty"],
+                imageUrl: "/selia/dkaida.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/A5RvIa"
+                
+             },
+             {
+                id: 36,
+                title: "9-nine-春色春恋春熙风",
+                description: "在调查中，和自称「リグ、ヴェーダ」的アーティファクト使用者组织发生了冲突。而在「リグ・ヴェーダ」的成员中，竟然发现了学园前辈“香坂 春風”的身影。魔眼所有者的真实身份。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/hjhjll.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/GxKWHO"
+                
+             },
+             {
+                id: 37,
+                title: "废村少女［贰］～阴翳诱秘姬之匣～",
+                description: "在一个夏夜，一场猛烈的暴风雨袭击了偏远的海边村庄シンジュ镇。这场灾难给这片土地和居民的心灵都留下了深刻的伤痕，不久之后，这个小镇就被遗弃了——人们消失了...",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/erererez.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/XdW1sz"
+                
+             },
+            {
+                id: 38,
+                title: "废村少女 ～妖异魅惑的笼之乡～",
+                description: "这是在一个小的地方城市所流传的，关于与世隔绝的村庄的传说。为了调查在自己生活的都市留下的古老的传承，主人公·八云一树，与自己社团的少女们一同，踏入了传说中的山涧。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC", "热门"],
+                imageUrl: "/selia/zczcccc.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/Kyx6uV"
+                
+             },
+            {
+                id: 39,
+                title: "苍之彼方的四重奏",
+                description: "这是一个在空中飞翔就像骑自行车一样简单的世界。反重力粒子被发现后，人类发明了梦想已久的飞空靴——反重力粒子靴（俗称“重力靴”），它的问世，为人类带来了全新的视野，而一种使用重力靴的竞技运动“Flying Circus”也随之诞生。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["安卓"],
+                imageUrl: "/selia/Aokana.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/PQWOhV"
+                
+             },
+             {
+                id: 40,
+                title: "RIDDLE JOKER",
+                description: "这个世界上存在一种超自然神秘力量，一开始人们称之为“超能力”，但在20世纪末时，人们又发现它与一种粒子“星幽子”对人类大脑的作用有关，因此人们后来又将这种力量改称为“星幽术”；而相对的，对于能够使用这种力量的人，人们称之为“星幽使”。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/ryryoo.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/kKdGTd"
+                
+             },
+            {
+                id: 41,
+                title: "牵绊闪耀的恋之伊吕波",
+                description: "主角三城刀辉是正朝着成为刀锻冶师之路迈进，丛云学园的技巧科二年级生。他的祖先是知名锻冶师，本人也受到来自各方的瞩目，却因为某个理由而远离锻冶刀剑，过着埋首于组装机械的学生生活。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC"],
+                imageUrl: "/selia/yilvbo.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/6rGKuz"
+                
+             },
+             {
+                id: 42,
+                title: "DRACU-RIOT!",
+                description: "漂浮在海上巨大人工岛屿海上都市，是个赌博和风俗合法发展的特区。本作主角六连佑斗因其好友仓端直太的邀请一同来了这欢乐特区，途中却遇到绑架事件，被卷入事件的佑斗意外发现这城市的秘密并成为了吸血鬼。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["Kr/Ty", "热门"],
+                imageUrl: "/selia/dracu-riot.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/aXjzCV"
+                
+             },
+              {
+                id: 43,
+                title: "候鸟的梦",
+                description: "天使在这个镇子里沉睡着。天使为了睡得安稳，每日清晨都会哼摇篮曲。人人们在摇篮曲中醒来，开始每天的工作。这个叫做ミッテベル的镇子上流传着这样的神奇传说。不只是天使，人们也能梦到不可思议的东西。进入印象中的一个人的梦境，并在其梦中出现。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC"],
+                imageUrl: "/selia/houniao.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/Xdj1uz"
+                
+             },
+                {
+                id: 44,
+                title: "放学后的灰姑娘",
+                description: "「放学后，说不定她在等着我。「假如，能交到女朋友的话，我想和她亲密地一起回家。」和在意的女孩子的偶然相遇，说不定会变成两人一起回家。」放学后的校园，离校时产生的恋爱的预感。本作，是在尽情品味仅存于离校中的恋爱情景、事件的同时，享受和女主角间的恋爱的游戏。",
+                tags: ["角色扮演", "冒险"],
+                platforms: ["PC"],
+                imageUrl: "/selia/huiguniang.jpg",
+                downloadUrl: "https://pan.hefamily.net/s/O9rWck"
+                
+             },
+        ];
+
+        // 渲染游戏卡片
+        function renderGames(gameList) {
+            const gamesGrid = document.getElementById('gamesGrid');
+            
+            if (gameList.length === 0) {
+                gamesGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>没有找到匹配的游戏</h3>
+                        <p>请尝试其他搜索关键词</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            gamesGrid.innerHTML = '';
+            
+            gameList.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                
+                // 创建平台水泡标签
+                const platformBubbles = game.platforms.map(platform => 
+                    `<span class="bubble-tag">${platform}版</span>`
+                ).join('');
+                
+                gameCard.innerHTML = `
+                    <div class="game-image">
+                        <img src="${game.imageUrl}" alt="${game.title}封面">
+                        <div class="bubble-tags">
+                            ${platformBubbles}
+                        </div>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">${game.title}</h3>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-meta">
+                            <span class="downloads">
+                                <i class="fas fa-download"></i> ${game.downloads}
+                            </span>
+                            <span class="rating">
+                                <i class="fas fa-heart"></i> ${game.rating}
+                            </span>
+                        </div>
+                        <a href="${game.downloadUrl}" class="download-btn" target="_blank" rel="noopener">
+                            <i class="fas fa-download"></i> 获取游戏
+                        </a>
+                    </div>
+                `;
+                
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+
+        // 搜索功能
+        function searchGames(query) {
+            if (!query) return games;
+            
+            const lowerQuery = query.toLowerCase();
+            return games.filter(game => 
+                game.title.toLowerCase().includes(lowerQuery) ||
+                game.description.toLowerCase().includes(lowerQuery) ||
+                game.tags.some(tag => tag.toLowerCase().includes(lowerQuery)) ||
+                game.platforms.some(platform => platform.toLowerCase().includes(lowerQuery))
+            );
+        }
+
+        // 根据标签筛选游戏
+        function filterGames(tag) {
+            if (tag === "全部") {
+                renderGames(games);
+                return;
+            }
+            
+            const filteredGames = games.filter(game => 
+                game.tags.includes(tag) || game.platforms.includes(tag)
+            );
+            
+            renderGames(filteredGames);
+        }
+
+        // 初始化公告栏
+        function initAnnouncement() {
+            const toggleBtn = document.getElementById('announcementToggle');
+            const content = document.getElementById('announcementContent');
+            const icon = toggleBtn.querySelector('.fa-chevron-down');
+            
+            let isOpen = false;
+            
+            toggleBtn.addEventListener('click', () => {
+                isOpen = !isOpen;
+                content.classList.toggle('active', isOpen);
+                icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                
+                // 调整页面布局
+                document.body.style.paddingTop = isOpen ? '180px' : '70px';
+            });
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGames(games);
+            initAnnouncement();
+            
+            // 标签按钮事件
+            document.querySelectorAll('.tag-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterGames(btn.dataset.tag);
+                });
+            });
+            
+            // 搜索按钮事件
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value;
+                const results = searchGames(query);
+                renderGames(results);
+                
+                // 重置标签状态
+                document.querySelectorAll('.tag-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.tag === "全部") btn.classList.add('active');
+                });
+            });
+            
+            // 输入框回车事件
+            document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    const query = document.getElementById('searchInput').value;
+                    const results = searchGames(query);
+                    renderGames(results);
+                    
+                    // 重置标签状态
+                    document.querySelectorAll('.tag-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.tag === "全部") btn.classList.add('active');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
